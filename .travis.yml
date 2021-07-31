@@ -2,8 +2,26 @@ sudo: required
 services:
   - docker
 
+#creating inital docker image
 before_install:
   - docker build -t ruslangainutdinov7/docker-react -f Dockerfile.dev .
 
+#running created inital image
 script:
   - docker run -e CI=true ruslangainutdinov7/docker-react npm run test
+
+#                                                                                                                   laborious - трудный, трудоемкий
+#deploy configuration
+deploy:
+  provider: elasticbeanstalk #travis-ci already has preconfigured provider values, in this case elasticbeanstalk
+  region: "us-east-2" # region from AWS url instance
+  app: "docker-react" # application name in AWS
+  env: "Dockerreact-env" # environment name
+  bucket_name: "elasticbeanstalk-us-east-2-473521662465" # target S3 bucket, place where to put application ; it is automatically created in S3 service when we create our app for the first time
+  bucket_path: "docker-react" #app name; directory where it should be uploaded
+  on:         
+    branch: master  # every time we push our code to master, that's when travis-ci will deploy
+# To permit travis-ci to deploy code to elastic we must configure "Users" in IAM service
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+
