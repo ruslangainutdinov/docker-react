@@ -8,6 +8,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Rusdlan says hello to evrn <code>src/App.js</code> and save to reload.
+          Feature content to be continued
         </p>
         <a
           className="App-link"
